@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="style.css">   
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <div class="login-container">
+        <h2>Login</h2>
+        <form id="login-form">
+            <input type="text" id="username" placeholder="Username" required>
+            <input type="password" id="password" placeholder="Password" required>
+            <button type="submit" id="login-btn">Login</button>
+            <p id="error-msg"></p>
+        </form>
+    </div>
+            
+</body>
+<script >document.addEventListener("DOMContentLoaded", function () {
+    const loginForm = document.getElementById("login-form");
+    const errorMsg = document.getElementById("error-msg");
+    const loginBtn = document.getElementById("login-btn");
+
+    // Sample credentials (replace with backend validation)
+    const validUsername = "admin123";
+    const validPassword = "admin123";
+
+    let loginAttempts = 0;
+    let lockoutTime = 10000; // 10 seconds
+
+    loginForm.addEventListener("submit", function (event) {
+        event.preventDefault();
+
+        let username = document.getElementById("username").value;
+        let password = document.getElementById("password").value;
+
+        if (username === validUsername && password === validPassword) {
+            window.location.href = "homepage.html"; // Redirect to homepage
+        } else {
+            loginAttempts++;
+            errorMsg.textContent = "Incorrect username or password.";
+            
+            if (loginAttempts >= 3) {
+                loginBtn.disabled = true;
+                errorMsg.textContent = "Too many failed attempts. Try again in 10 seconds.";
+                
+                setTimeout(() => {
+                    loginBtn.disabled = false;
+                    errorMsg.textContent = "Too many failed attempts. Try again in 10 seconds";
+                    loginAttempts = 0;
+                }, lockoutTime);
+            }
+        }
+    });
+});
+</script>
+</html>
